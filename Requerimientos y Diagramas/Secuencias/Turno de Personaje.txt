@@ -1,0 +1,41 @@
+title Turno de Personaje
+
+participant Usuario
+participant Partida
+participant Personaje
+participant Enemigo
+
+autoactivation on
+
+Partida->Usuario: pedirEleccion()
+Usuario->Partida: eleccion(int)
+
+alt [eleccion = 1]
+  Partida->Personaje: solicitarHabilidadEspecial()
+  Personaje->Personaje: validarMana()
+  Personaje->Personaje: disponible(bool)
+
+  alt [disponibilidad = true]
+    Partida->Personaje: getDaÃ±o()
+    Personaje-->>Partida: daÃ±o
+    Partida->Enemigo: atacar(daÃ±o)
+    Enemigo->Enemigo: restarVida(int)
+  else [disponibilidad = false]
+    Partida<--Personaje: No hay suficiente mana
+  end
+
+else [eleccion = 2]
+  Partida->Personaje: getDaÃ±o()
+  Personaje-->>Partida: daÃ±o
+  Partida->Enemigo: atacar(daÃ±o)
+  Partida->Enemigo: ataqueBasico(int)
+  Enemigo->Enemigo: restarVida(int)
+
+else [eleccion = 3]
+  Partida->Personaje: defenderse()
+
+else [eleccion = 4]
+  Partida->Personaje: usarItem()
+  Personaje->Personaje: elegirItem()
+  Personaje->Personaje: usarItem()
+end

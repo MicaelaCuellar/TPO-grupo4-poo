@@ -1,0 +1,30 @@
+title Finalizar Nivel 
+
+
+participant Partida
+participant Party
+participant Batalla
+participant Personaje
+
+
+autoactivation on
+
+Partida ->Partida: verificarFinCombate
+
+alt [verificarFinCombate = true]
+Partida ->Party: darOro()
+loop [[for i=1; i<4; i++]]
+Party->Personaje: subirNivel()
+Personaje-->>Party:subi de nivel
+end
+Party-->>Partida:subi de nivel
+
+
+Partida->Batalla:finalizar
+Batalla-->>Partida:batalla finalizada
+Partida->Batalla: crearBatalla()
+Batalla->Batalla:cargarEnemigos()
+Batalla-->>Partida:batalla creada
+else [verificarFinCombate = false]
+Partida-->>Partida:seguimos en combate
+end

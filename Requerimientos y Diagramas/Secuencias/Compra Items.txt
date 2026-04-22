@@ -1,0 +1,23 @@
+title Compra de Items
+
+participant Usuario
+participant Partida
+participant Party
+participant Consumible
+
+Usuario -> Partida: elegirComprar()
+Partida -->> Usuario: Mostrar Items
+Usuario -> Partida: seleccionarItem()
+
+Partida -> Consumible: getPrecio()
+Consumible -->> Partida: precio
+
+Partida -> Party: verificarOro(precio)
+
+alt [oro >= precio]
+    Partida -> Party: restarOro(precio)
+    Partida -> Party: agregarItem()
+    Partida -->> Usuario: Compra exitosa
+else [oro < precio]
+    Partida -->> Usuario: No hay suficiente oro
+end
